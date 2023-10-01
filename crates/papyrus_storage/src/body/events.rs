@@ -64,6 +64,20 @@ use crate::db::{DbCursor, DbTransaction, RO};
 use crate::{StorageResult, StorageTxn};
 
 /// An identifier of an event.
+#[derive(Debug, Clone, Default, Eq, PartialEq, Hash, Deserialize, Serialize, PartialOrd, Ord)]
+pub struct ExecutionResources {
+    steps: i32,
+    memory_holes: i32,
+    range_check_builtin_applications: i32,
+    pedersen_builtin_applications: i32,
+    poseidon_builtin_applications: i32,
+    ec_op_builtin_applications: i32,
+    ecdsa_builtin_applications: i32,
+    bitwise_builtin_applications: i32,
+    keccak_builtin_applications: i32,
+}
+
+/// An identifier of an event.
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Deserialize, Serialize)]
 pub struct EventIndex(pub TransactionIndex, pub EventIndexInTransactionOutput);
 

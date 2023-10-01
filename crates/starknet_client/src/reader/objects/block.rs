@@ -12,6 +12,7 @@ use starknet_api::block::{
     BlockNumber,
     BlockTimestamp,
     GasPrice,
+    ResourcePrice,
 };
 use starknet_api::core::{ContractAddress, GlobalRoot};
 #[cfg(doc)]
@@ -45,6 +46,7 @@ pub struct Block {
     // Default since old blocks don't include this field.
     #[serde(default)]
     pub starknet_version: String,
+    pub l1_gas_price: ResourcePrice,
 }
 
 /// Errors that might be encountered while converting the client representation of a [`Block`] to a
@@ -187,6 +189,8 @@ impl Block {
 
         let n_events = transaction_outputs.iter().flat_map(|output| output.events()).count();
 
+        let starknet_version = self.starknet_version.clone();
+
         // Get the header.
         let header = starknet_api::block::BlockHeader {
             block_hash: self.block_hash,
@@ -196,6 +200,8 @@ impl Block {
             state_root: self.state_root,
             sequencer: self.sequencer_address,
             timestamp: self.timestamp,
+            l1_gas_price: self.l1_gas_price,
+            starknet_version: self.starknet_version,
             n_transactions: u64::try_from(transactions.len())
                 .expect("usize to u64 conversion shouldn't fail"),
             n_events: u64::try_from(n_events).expect("usize to u64 conversion shouldn't fail"),
@@ -209,7 +215,7 @@ impl Block {
 
         let commitments = calculate_block_commitments(&header, &body)?;
 
-        Ok((starknet_api_block { header, body, commitments }, self.starknet_version))
+        Ok((starknet_api_block { header, body, commitments }, starknet_version))
     }
 }
 
