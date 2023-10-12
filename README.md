@@ -147,7 +147,7 @@ curl --location 'localhost:8080/rpc/v0_3' --header 'Content-Type: application/js
 > The default expected version id is in the format: `v<Major>_<Minor>`.  
 > Also supported: `V<Major>_<Minor>` and `v<Major>_<Minor>_<Patch>` (or any combination of the above).  
 > The Node always supports one patched version per minor version (the latest for that minor version).  
-> When specifying a patch the semantic is grater or equal to the specified patch.  
+> When specifying a patch the semantic is greater or equal to the specified patch.  
 
 ## Endpoints
 
